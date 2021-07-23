@@ -2848,3 +2848,13 @@ func TestExecInDeletedDir(t *testing.T) {
 	// `go version` should not fail
 	tg.run("version")
 }
+
+// Issue 46686
+func TestInvalidValueForFlagP(t *testing.T) {
+	tg := testgo(t)
+	defer tg.cleanup()
+	tg.parallel()
+	tg.tempDir("src")
+	tg.setenv("GOPATH", tg.path("."))
+	tg.runFail("build", "-p=-1")
+}
